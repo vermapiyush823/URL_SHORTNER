@@ -5,15 +5,107 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Page</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+            align-items: center;
+            background: #9cccff;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        h1 {
+            color: rgb(255, 246, 145);
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
+            padding: 20px;
+            gap: 10px;
+            border: #007bff 2px solid;
+            box-shadow: 0 0 10px 0 #fff;
+            background-color: rgb(255, 245, 226);
+            width: fit-content;
+            border-radius: 10px;
+
+        }
+
+        input {
+            padding: 10px;
+            border: 1px solid #007bff;
+            border-radius: 5px;
+            width: 300px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 
 <body>
-    <h1>Welcome to Home Page</h1>
-    <% urls.forEach(urls=>{ %>
-        <li>
-            <%= urls.shortId %>
-        </li>
-        <% }) %>
+    <h1>URL Shortner</h1>
+    <% if(locals.id) { %>
+        <p>Your shortened URL is: http://localhost:5000/<%=id %>
+        </p>
+        <% } %>
+            <% if(!locals.id) { %>
+                <div>
+                    <form method="post" action="/url/">
+                        <label for="url">Enter your original URL</label>
+                        <input type="text" id="url" name="url" placeholder="Enter your original URL here" required>
+                        <button type="submit">Shorten</button>
+                    </form>
+                </div>
+                <% } %>
+
+                    <% if(locals.urls) { %>
+                        <table>
+                            <thead>
+                                <th>
+                                    S.No
+                                </th>
+                                <th>
+                                    ShortId
+                                </th>
+                                <th>
+                                    Redirect
+                                </th>
+                                <th>
+                                    Clicks
+                                </th>
+                            </thead>
+                            <tbody>
+                                <% urls.forEach((url,index)=> {%>
+                                    <tr>
+                                        <td>
+                                            <%=index+1 %>
+                                        </td>
+                                        <td>
+                                            <%=url.shortId %>
+                                        </td>
+                                        <td>
+                                            <%=url.redirectURL %>
+                                        </td>
+                                        <td>
+                                            <%=url.visitHistory.length %>
+                                        </td>
+                                    </tr>
+                                    <% }) %>
+                            </tbody>
+                        </table>
+                        <%}%>
 
 </body>
 
