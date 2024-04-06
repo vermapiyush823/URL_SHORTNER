@@ -9,7 +9,7 @@ const cookieParser = require("cookie-parser");
 const urlRoute = require("./routes/url");
 const staticRoute = require("./routes/staticRouter");
 const userRoute = require("./routes/user");
-const restrictToLoggedinUserOnly = require("./middlewares/auth");
+const { restrictToLoggedinUserOnly, checkAuth } = require("./middlewares/auth");
 
 // Connection
 connectMongoDb("mongodb://127.0.0.1:27017/urlDb").then(() => {
@@ -24,7 +24,7 @@ app.set("view engine", "ejs");
 app.set("views", path.resolve("./views"));
 // Routes
 app.use("/url", restrictToLoggedinUserOnly, urlRoute);
-app.use("/", staticRoute);
+app.use("/", checkAuth, staticRoute);
 app.use("/user", userRoute);
 
 app.get("/url/:shortId", async (req, res) => {

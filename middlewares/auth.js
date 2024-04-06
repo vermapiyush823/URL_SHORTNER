@@ -12,4 +12,11 @@ async function restrictToLoggedinUserOnly(req, res, next) {
   next();
 }
 
-module.exports = restrictToLoggedinUserOnly;
+async function checkAuth(req, res, next) {
+  const userid = req.cookies?.uid;
+  const user = getUser(userid);
+  req.user = user;
+  next();
+}
+
+module.exports = { restrictToLoggedinUserOnly, checkAuth };
